@@ -6,4 +6,5 @@ Shoppe::Engine.routes.draw do
       patch 'stripe_account'
     end
   end
+  resources :subscriber_gifts
 end

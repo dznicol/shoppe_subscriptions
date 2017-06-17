@@ -4,6 +4,7 @@ en:
       admin_primary:
         subscriptions: Subscriptions
         subscription_plans: Subscription Plans
+        subscriber_gifts: Subscriber Gifts
     subscription_plans:
       subscription_plans: Subscription Plans
       new: New Subscription Plan
@@ -69,6 +70,15 @@ en:
       current_subscribers: Current Subscribers
       cancelled_subscribers: Cancelled Subscribers
       status: Status
+    gifts:
+      subscriber_gifts: Subscriber Gifts
+      new: New Subscriber Gift
+      subscriber: Subscriber
+      product: Produc
+      created_at: Created At
+      updated_at: Updated At
+      claimed: Claimed
+      no_gifts: No Subscriber Gifts Claimed
 
 
     intervals:

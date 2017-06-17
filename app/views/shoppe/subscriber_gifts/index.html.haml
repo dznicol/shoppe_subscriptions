@@ -1,0 +1,31 @@
+= stylesheet_link_tag 'shoppe_subscriptions/application'
+= javascript_include_tag 'shoppe_subscriptions/application'
+
+- @page_title = t('shoppe.gifts.subscriber_gifts')
+
+= content_for :header do
+  %p.buttons
+    = link_to t('shoppe.gifts.new'), :new_subscriber_gift, :class => 'button green'
+  %h2.gifts= t('shoppe.gifts.gifts')
+
+.table
+  %table.data
+    %thead
+      %tr
+        %th= t('shoppe.gifts.subscriber')
+        %th= t('shoppe.gifts.product')
+        %th= t('shoppe.gifts.created_at')
+        %th= t('shoppe.gifts.updated_at')
+        %th= t('shoppe.gifts.claimed')
+    %tbody
+      - if @gifts.empty?
+        %tr.empty
+          %td{:colspan => 7}= t('shoppe.gifts.no_gifts')
+      - else
+        - for gift in @gifts
+          %tr
+            %td= link_to gift.subscriber.customer.full_name
+            %td= link_to gift.product.name
+            %td= gift.created_at
+            %td= gift.updated_at
+            %td= gift.claimed
