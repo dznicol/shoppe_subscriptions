@@ -24,8 +24,8 @@
       - else
         - for gift in @gifts
           %tr
-            %td= link_to gift.subscriber.customer.full_name
-            %td= link_to gift.product.name
+            %td= link_to gift.subscriber.customer.full_name, gift.subscriber.customer
+            %td= link_to gift.product.name, [:edit, gift.product]
             %td= gift.created_at
             %td= gift.updated_at
             %td= gift.claimed
