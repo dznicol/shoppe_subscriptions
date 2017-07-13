@@ -49,12 +49,19 @@ class InvoicePaymentSucceeded
         # variants but no default variant (as Shoppe returns the 0 priced parent product!)
         product = product.variants.first if product.has_variants? && product.default_variant.nil?
 
-        if subscriber.balance >= product.price(subscriber.currency)
+        product_price = product.price(subscriber.currency)
+
+        if price.nil?
+          Rails.logger.warn "Cannot price in #{subscriber.currency} for product #{product.id}"
+          raise SubscriptionCreationError.new("Cannot price in #{subscriber.currency} for product #{product.id}")
+        end
+
+        if subscriber.balance >= product_price
           purchase(customer, subscriber, invoice)
         end
       else
         Rails.logger.warn "Cannot find subscriber with id #{subscription_id}"
-        raise AddressNotAcceptableError.new("Cannot find subscriber with ID #{subscription_id}")
+        raise SubscriptionCreationError.new("Cannot find subscriber with ID #{subscription_id}")
       end
     end
   end
