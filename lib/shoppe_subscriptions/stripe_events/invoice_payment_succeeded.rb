@@ -51,7 +51,7 @@ class InvoicePaymentSucceeded
 
         product_price = product.price(subscriber.currency)
 
-        if price.nil?
+        if product_price.nil?
           Rails.logger.warn "Cannot price in #{subscriber.currency} for product #{product.id}"
           raise SubscriptionCreationError.new("Cannot price in #{subscriber.currency} for product #{product.id}")
         end
