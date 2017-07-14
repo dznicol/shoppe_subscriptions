@@ -73,6 +73,9 @@ module Purchasing
         order.delivery_tax_rate = delivery_service_price.tax_rate.try(:rate) || 0
       end
 
+      # Save subscription stripe id to order, will come in handy for applications
+      order.properties[:subscription] = subscriber.stripe_id
+
       # Allow errors to propogate back to Stripe so we don't silently forget this order
       order.save
       # Need to reload the order as the order_items do not instantly get mapped
