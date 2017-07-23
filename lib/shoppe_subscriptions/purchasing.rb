@@ -1,12 +1,13 @@
 module Purchasing
-  def purchase(customer, subscriber, invoice)
-    product = subscriber.subscription_plan.product
-    if product.has_variants?
-      product = if product.default_variant.present?
-                  product.default_variant
-                else
-                  product.variants.last
-                end
+  def purchase(customer, subscriber, invoice=nil, product=nil)
+    subscription_product = product.nil? ? subscriber.subscription_plan.product : product
+
+    if subscription_product.has_variants?
+      subscription_product = if subscription_product.default_variant.present?
+                               subscription_product.default_variant
+                               else
+                                 subscription_product.variants.last
+                             end
     end
 
     ActiveRecord::Base.transaction do
@@ -58,7 +59,7 @@ module Purchasing
       order.email_address = subscriber.recipient_email.presence || customer.email
       order.phone_number = subscriber.recipient_phone.presence || customer.phone
 
-      order.order_items.add_item(product, 1)
+      order.order_items.add_item(subscription_product, 1)
 
       # Add any unclaimed gifts
       subscriber.gifts.unclaimed.each do |gift|
@@ -81,13 +82,14 @@ module Purchasing
       # Need to reload the order as the order_items do not instantly get mapped
       order.reload
 
-      order.payments.create(amount: subscriber.subscription_plan.product.price(subscriber.currency),
+      order.payments.create(amount: subscription_product.price(subscriber.currency),
                             method: 'Subscription Reallocation',
                             reference: subscriber.stripe_id,
                             refundable: false,
                             confirmed: true)
 
-      subscriber.update balance: subscriber.balance - subscriber.subscription_plan.product.price(subscriber.currency)
+      new_balance = subscriber.balance - subscription_product.price(subscriber.currency)
+      subscriber.update [0, new_balance].max
 
       order.proceed_to_confirm
       order.confirm!
