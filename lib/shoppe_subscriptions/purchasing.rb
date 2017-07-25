@@ -89,7 +89,7 @@ module Purchasing
                             confirmed: true)
 
       new_balance = subscriber.balance - subscription_product.price(subscriber.currency)
-      subscriber.update [0, new_balance].max
+      subscriber.update balance: [0, new_balance].max
 
       order.proceed_to_confirm
       order.confirm!
