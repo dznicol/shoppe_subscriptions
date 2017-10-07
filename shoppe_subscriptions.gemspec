@@ -9,9 +9,9 @@ Gem::Specification.new do |s|
   s.version     = ShoppeSubscriptions::VERSION
   s.authors     = ['David Nicol']
   s.email       = ['david@sidstan.com']
-  s.homepage    = 'TODO'
-  s.summary     = 'TODO: Summary of ShoppeSubscriptions.'
-  s.description = 'TODO: Description of ShoppeSubscriptions.'
+  s.homepage    = ''
+  s.summary     = 'A subscriptions module for use with Shoppe.'
+  s.description = 'A subscriptions module for use with Shoppe.'
   s.license     = 'MIT'
 
   s.files = Dir['{app,config,db,lib}/**/*', 'MIT-LICENSE', 'Rakefile', 'README.rdoc']
