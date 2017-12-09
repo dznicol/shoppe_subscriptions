@@ -10,6 +10,9 @@ module Shoppe
 
     has_many :gifts, class_name: 'Shoppe::Gift', inverse_of: :subscriber
 
+    has_many :subscriber_orders, class_name: 'Shoppe::SubscriberOrder'
+    has_many :orders, through: :subscriber_orders
+
     default_scope { where(cancelled_at: nil) }
 
     attr_accessor :stripe_api_key

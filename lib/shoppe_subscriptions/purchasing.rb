@@ -93,6 +93,9 @@ module Purchasing
 
       order.proceed_to_confirm
       order.confirm!
+
+      subscriber.orders << order
+      subscriber.save
     end
   end
 end
