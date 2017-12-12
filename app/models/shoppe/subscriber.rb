@@ -13,6 +13,8 @@ module Shoppe
     has_many :subscriber_orders, class_name: 'Shoppe::SubscriberOrder'
     has_many :orders, through: :subscriber_orders
 
+    belongs_to :recipient_address, class_name: 'Shoppe::Address'
+
     default_scope { where(cancelled_at: nil) }
 
     attr_accessor :stripe_api_key
