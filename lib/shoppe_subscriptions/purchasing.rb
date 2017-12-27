@@ -38,8 +38,7 @@ module Purchasing
       order.billing_postcode = address.postcode
       order.billing_country = address.country
 
-      # Try to use any subscriber delivery_address if there is one. Next try to use the
-      # (base) customer delivery address.
+      # Try to use any delivery_address if there is one. Next try to use the delivery address.
       # If there is none and there is more than 1 address use the last address (otherwise we
       # default delivery to biiling).
       address = subscriber.delivery_address || customer.addresses.delivery.first
