@@ -64,7 +64,7 @@ module Purchasing
       order.order_items.add_item(subscription_product, 1)
 
       # Add any unclaimed gifts
-      subscriber.gifts.unclaimed.each do |gift|
+      subscriber.subscriber_gifts.unclaimed.each do |gift|
         order.order_items.add_item(gift.product, 1)
         gift.update claimed: true
       end
