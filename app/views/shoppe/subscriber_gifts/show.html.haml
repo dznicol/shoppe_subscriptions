@@ -1,6 +1,7 @@
-- @page_title = t('shoppe.gifts.gifts') + " - #{@gift.name}"
+- @page_title = t('shoppe.gifts.subscriber_gifts') + " - #{@subscriber_gift.id}"
 = content_for :header do
   %p.buttons
-    = link_to t('shoppe.gifts.new_gift'), [:new, @gift, :address], class: "button"
-    = link_to t('shoppe.gifts.edit'), [:edit, @gift], class: "button"
-  %h2.users= t('shoppe.gifts.gifts') + "- #{@gift.name}"
+    = link_to t('shoppe.gifts.new_gift'), [:new, @subscriber_gift], class: "button"
+    = link_to t('shoppe.gifts.edit_gift'), [:edit, @subscriber_gift], class: "button"
+  %h2.users= t('shoppe.gifts.subscriber_gift') + "- #{@subscriber_gift.subscriber.customer.name}"
+

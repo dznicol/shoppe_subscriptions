@@ -72,14 +72,22 @@ en:
       status: Status
     gifts:
       subscriber_gifts: Subscriber Gifts
-      new: New Subscriber Gift
-      subscriber: Subscriber
+      subscriber_gift: Subscriber Gift
+      new_gift: New Subscriber Gift
+      edit_gift: Edit Gift
       product: Product
+      subscriber: Subscriber
+      claimed: Claimed
       created_at: Created At
       updated_at: Updated At
       claimed: Claimed
-      no_gifts: No Subscriber Gifts Claimed
-
+      no_gifts: No Subscriber Gifts
+      select_product: Select Product
+      select_subscriber: Select Subscriber
+      successfully_created: Gift was successfully created.
+      successfully_updated: Gift was successfully updated.
+      successfully_destroyed: Gift was successfully destroyed.
+      delete_confirmation: Are you sure you want to delete this Subscriber Gift?
 
     intervals:
       day: Day

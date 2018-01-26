@@ -1,5 +1,5 @@
 module Shoppe
-  class Gift < ActiveRecord::Base
+  class SubscriberGift < ActiveRecord::Base
     belongs_to :product, class_name: 'Shoppe::Product'
     belongs_to :subscriber, class_name: 'Shoppe::Subscriber'
 

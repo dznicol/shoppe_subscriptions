@@ -1,59 +1,28 @@
 = stylesheet_link_tag 'shoppe_subscriptions/application'
 = javascript_include_tag 'shoppe_subscriptions/application'
 
-= form_for @gift do |f|
+= form_for @subscriber_gift do |f|
   = f.error_messages
 
-  = field_set_tag  t('shoppe.gifts.summary') do
-    .splitContainer
-      %dl.half
-        %dt= f.label :name,  t('shoppe.gifts.name')
-        %dd= f.text_field :name, :class => 'text'
-      %dl.half
-        %dt= f.label :api_plan_id,  t('shoppe.gifts.api_plan_id')
-        %dd
-          = f.text_field :api_plan_id, {:class => 'text', readonly: @gift.persisted?}
-          %p.help=  t('shoppe.gifts.stripe_gift_id')
-
-  = field_set_tag t('shoppe.gifts.price') do
+  = field_set_tag t('shoppe.gifts.subscriber_gifts') do
     .splitContainer
       %dl.third
-        %dt= f.label :amount, t('shoppe.gifts.amount')
-        %dd
-          = f.text_field :amount, readonly: @gift.persisted?, :class => 'text'
-      %dl.third
-        %dt= f.label :currency, t('shoppe.gifts.currency')
-        %dd
-          = f.select :currency, @charging_currencies, {disabled: @gift.persisted?}, {class: 'chosen', disabled: @gift.persisted?}
-          %p.help=  t('shoppe.gifts.currency_help')
-      %dl.third
-        %dt= f.label :trial_period_days, t('shoppe.gifts.trial_period_days')
-        %dd
-          = f.text_field :trial_period_days, {class: 'text', placeholder: t('shoppe.gifts.days').downcase, readonly: @gift.persisted?}
-          %p.help=  t('shoppe.gifts.trial_period_help')
-
-  = field_set_tag t('shoppe.gifts.interval') do
-    .splitContainer
-      %dl.half
-        %dt= f.label :interval, t('shoppe.gifts.interval')
-        %dd
-          = f.select :interval, Shoppe::SubscriptionPlan::INTERVALS.collect {|i| [t("shoppe.intervals.#{i}"), i]}, {}, {class: 'chosen', disabled: @gift.persisted?}
-          %p.help=  t('shoppe.gifts.interval_help')
-      %dl.half
-        %dt= f.label :interval_count, t('shoppe.gifts.interval_count')
-        %dd
-          = f.text_field :interval_count, {:class => 'text', readonly: @gift.persisted?}
-          %p.help=  t('shoppe.gifts.interval_count_help')
-
-  = field_set_tag t('shoppe.gifts.product') do
-    .container
-      %dl
         %dt= f.label :product, t('shoppe.gifts.product')
         %dd
-          = f.collection_select :product_id, @subscribable_products, :id, :full_name, {include_blank: true}, {class: 'chosen-with-deselect', data: {placeholder: t('shoppe.gifts.select_product')}}
+          = f.collection_select :product_id, @products, :id, :full_name, {include_blank: true}, {class: 'chosen-with-deselect', data: {placeholder: t('shoppe.gifts.select_product')}}
+      %dl.third
+        %dt= f.label :product, t('shoppe.gifts.subscriber')
+        %dd
+          = f.collection_select :subscriber_id, @subscribers, :id, :full_name, {include_blank: true}, {class: 'chosen-with-deselect', data: {placeholder: t('shoppe.gifts.select_subscriber')}}
+      %dl.third
+        %dt= f.label :product, t('shoppe.gifts.subscriber')
+        %dd.checkbox
+          = f.check_box :claimed
+          = f.label :active,  t('shoppe.gifts.claimed')
+
 
   %p.submit
-    - unless @gift.new_record?
-      %span.right= link_to  t('shoppe.delete'), [@gift], :class => 'button purple', :method => :delete, :data => {:confirm => t('shoppe.gifts.delete_confirmation')}
+    - unless @subscriber_gift.new_record?
+      %span.right= link_to  t('shoppe.delete'), [@subscriber_gift], :class => 'button purple', :method => :delete, :data => {:confirm => t('shoppe.gifts.delete_confirmation')}
     = f.submit t('shoppe.submit'), :class => 'button green'
-    = link_to t('shoppe.cancel'), :gifts, :class => 'button'
+    = link_to t('shoppe.cancel'), :subscriber_gifts, :class => 'button'

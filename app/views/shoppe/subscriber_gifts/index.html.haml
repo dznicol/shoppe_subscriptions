@@ -6,7 +6,7 @@
 = content_for :header do
   %p.buttons
     = link_to t('shoppe.gifts.new'), :new_subscriber_gift, :class => 'button green'
-  %h2.gifts= t('shoppe.gifts.gifts')
+  %h2.gifts= t('shoppe.gifts.subscriber_gifts')
 
 .table
   %table.data
@@ -18,14 +18,14 @@
         %th= t('shoppe.gifts.updated_at')
         %th= t('shoppe.gifts.claimed')
     %tbody
-      - if @gifts.empty?
+      - if @subscriber_gifts.empty?
         %tr.empty
           %td{:colspan => 7}= t('shoppe.gifts.no_gifts')
       - else
-        - for gift in @gifts
+        - for gift in @subscriber_gifts
           %tr
             %td= link_to gift.subscriber.customer.full_name, gift.subscriber.customer
             %td= link_to gift.product.name, [:edit, gift.product]
             %td= gift.created_at
             %td= gift.updated_at
-            %td= gift.claimed
+            %td= link_to gift.claimed.to_s, edit_subscriber_gift_path(gift)

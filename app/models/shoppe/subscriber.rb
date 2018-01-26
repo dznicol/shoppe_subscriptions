@@ -8,7 +8,7 @@ module Shoppe
 
     has_many :transactions, class_name: 'Shoppe::SubscriberTransaction'
 
-    has_many :gifts, class_name: 'Shoppe::Gift', inverse_of: :subscriber
+    has_many :subscriber_gifts, class_name: 'SubscriberGift', inverse_of: :subscriber
 
     has_many :subscriber_orders, class_name: 'Shoppe::SubscriberOrder'
     has_many :orders, through: :subscriber_orders
@@ -18,6 +18,10 @@ module Shoppe
     default_scope { where(cancelled_at: nil) }
 
     attr_accessor :stripe_api_key
+
+    def full_name
+      recipient_name || customer.full_name
+    end
 
     private
 

@@ -3,7 +3,7 @@ require 'test_helper'
 module Shoppe
   class SubscriberGiftsControllerTest < ActionController::TestCase
     setup do
-      @gift = shoppe_gifts(:one)
+      @subscriber_gift = shoppe_gifts(:one)
       @routes = Engine.routes
     end
 
@@ -27,23 +27,23 @@ module Shoppe
     end
 
     test "should show gift" do
-      get :show, id: @gift
+      get :show, id: @subscriber_gift
       assert_response :success
     end
 
     test "should get edit" do
-      get :edit, id: @gift
+      get :edit, id: @subscriber_gift
       assert_response :success
     end
 
     test "should update gift" do
-      patch :update, id: @gift, gift: {  }
+      patch :update, id: @subscriber_gift, gift: {  }
       assert_redirected_to gift_path(assigns(:gift))
     end
 
     test "should destroy gift" do
       assert_difference('Gift.count', -1) do
-        delete :destroy, id: @gift
+        delete :destroy, id: @subscriber_gift
       end
 
       assert_redirected_to gifts_path

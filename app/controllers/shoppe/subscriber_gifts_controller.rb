@@ -1,12 +1,12 @@
 module Shoppe
   class SubscriberGiftsController < Shoppe::ApplicationController
-    before_action :set_gift, only: [:show, :edit, :update, :destroy]
+    before_action :set_subscriber_gift, only: [:show, :edit, :update, :destroy]
 
     before_filter { @active_nav = :subscriber_gifts }
 
     # GET /gifts
     def index
-      @gifts = Shoppe::Gift.all
+      @subscriber_gifts = Shoppe::SubscriberGift.all
     end
 
     # GET /gifts/1
@@ -15,19 +15,24 @@ module Shoppe
 
     # GET /gifts/new
     def new
-      @gift = Shoppe::Gift.new
+      @subscriber_gift = Shoppe::SubscriberGift.new
+      @products = Shoppe::Product.all
+      @subscribers = Shoppe::Subscriber.all
     end
 
     # GET /gifts/1/edit
     def edit
+      @products = Shoppe::Product.all
+      @subscribers = Shoppe::Subscriber.all
     end
 
     # POST /gifts
     def create
-      @gift = Shoppe::Gift.new(gift_params)
+      @subscriber_gift = Shoppe::SubscriberGift.new(gift_params)
 
-      if @gift.save
-        redirect_to @gift, notice: 'Gift was successfully created.'
+      if @subscriber_gift.save
+        # redirect_to @subscriber_gift, notice: 'Gift was successfully created.'
+        redirect_to subscriber_gifts_url, notice: t('shoppe.gifts.successfully_created')
       else
         render :new
       end
@@ -35,8 +40,8 @@ module Shoppe
 
     # PATCH/PUT /gifts/1
     def update
-      if @gift.update(gift_params)
-        redirect_to @gift, notice: 'Gift was successfully updated.'
+      if @subscriber_gift.update(gift_params)
+        redirect_to subscriber_gifts_url, notice: t('shoppe.gifts.successfully_updated')
       else
         render :edit
       end
@@ -44,19 +49,19 @@ module Shoppe
 
     # DELETE /gifts/1
     def destroy
-      @gift.destroy
-      redirect_to gifts_url, notice: 'Gift was successfully destroyed.'
+      @subscriber_gift.destroy
+      redirect_to subscriber_gifts_url, notice: t('shoppe.gifts.successfully_destroyed')
     end
 
     private
       # Use callbacks to share common setup or constraints between actions.
-      def set_gift
-        @gift = Shoppe::Gift.find(params[:id])
+      def set_subscriber_gift
+        @subscriber_gift = Shoppe::SubscriberGift.find(params[:id])
       end
 
       # Only allow a trusted parameter "white list" through.
       def gift_params
-        params[:gift]
+        params.require(:subscriber_gift).permit(:subscriber_id, :product_id, :claimed)
       end
   end
 end
