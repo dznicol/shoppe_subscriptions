@@ -1,4 +1,5 @@
 require 'shoppe_subscriptions/purchasing'
+require 'errors/subscription_creation_error'
 
 class InvoicePaymentSucceeded
   include Purchasing
