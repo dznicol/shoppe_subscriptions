@@ -28,11 +28,11 @@ module Shoppe
     end
 
     def self.key(api_key)
-      api_key || @stripe_api_key || Shoppe::Stripe.api_key
+      api_key || Shoppe::Stripe.api_key
     end
 
     def key(api_key)
-      api_key || @stripe_api_key || Shoppe::Stripe.api_key
+      api_key || Shoppe::Stripe.api_key
     end
 
     private
