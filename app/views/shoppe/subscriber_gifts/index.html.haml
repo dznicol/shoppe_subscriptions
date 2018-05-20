@@ -14,6 +14,7 @@
       %tr
         %th= t('shoppe.gifts.subscriber')
         %th= t('shoppe.gifts.product')
+        %th= t('shoppe.gifts.subscriber_id')
         %th= t('shoppe.gifts.created_at')
         %th= t('shoppe.gifts.updated_at')
         %th= t('shoppe.gifts.claimed')
@@ -26,6 +27,7 @@
           %tr
             %td= link_to gift.subscriber.customer.full_name, gift.subscriber.customer
             %td= link_to gift.product.name, [:edit, gift.product]
+            %td= gift.subscriber.id
             %td= gift.created_at
             %td= gift.updated_at
             %td= link_to gift.claimed.to_s, edit_subscriber_gift_path(gift)
