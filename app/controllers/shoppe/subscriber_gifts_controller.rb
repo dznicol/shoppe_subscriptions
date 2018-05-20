@@ -17,13 +17,13 @@ module Shoppe
     def new
       @subscriber_gift = Shoppe::SubscriberGift.new
       @products = Shoppe::Product.all
-      @subscribers = Shoppe::Subscriber.all
+      @subscribers = Shoppe::Subscriber.unscoped.all
     end
 
     # GET /gifts/1/edit
     def edit
       @products = Shoppe::Product.all
-      @subscribers = Shoppe::Subscriber.all
+      @subscribers = Shoppe::Subscriber.unscoped.all
     end
 
     # POST /gifts
