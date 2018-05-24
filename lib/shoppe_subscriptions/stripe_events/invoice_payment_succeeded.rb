@@ -10,11 +10,6 @@ class InvoicePaymentSucceeded
 
       invoice = event.data.object
 
-      # We can't look up the subscriber object from customer, we have to record both the
-      # customer ID and subscription ID when creating the subscription, so we can
-      # look them back up here.
-      customer = Shoppe::Customer.find_by stripe_id: invoice.customer
-
       # The subscription is left blank if the line item is an invoiceitem
       # First try to look up the subscription from supplied webhook data
       subscription_id = invoice.subscription || invoice.lines.data.first.try(:subscription)
@@ -25,6 +20,10 @@ class InvoicePaymentSucceeded
       # We now raise an error if we can't find the susbcriber so Stripe will retry, giving us a chance to get the
       # Stripe ID right in our DB.
       subscriber = Shoppe::Subscriber.find_by(stripe_id: subscription_id)
+
+      # Don't rely on Stripe customer as currently multiple purchases can result in multiple customers.
+      # Therefore although we have a record of the last customer's stripe_id, the best plan is to ignore it.
+      customer = subscriber.customer
 
       # Add amount to balance for relevant subscription
       if subscriber.present?
