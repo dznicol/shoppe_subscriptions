@@ -3,11 +3,12 @@ module Purchasing
     subscription_product = product.nil? ? subscriber.subscription_plan.product : product
 
     if subscription_product.has_variants?
-      subscription_product = if subscription_product.default_variant.present?
-                               subscription_product.default_variant
-                               else
-                                 subscription_product.variants.last
-                             end
+      variant = if subscription_product.default_variant.present? and subscription_product.in_stock?
+                  subscription_product.default_variant
+                else
+                  subscription_product.variants.find { |v| v.stock_control? == false or v.stock > 0 }
+                end
+      subscription_product = variant if variant.present?
     end
 
     ActiveRecord::Base.transaction do
