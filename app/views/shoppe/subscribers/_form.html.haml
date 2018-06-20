@@ -10,13 +10,17 @@
             .currency= Shoppe.settings.currency_unit.html_safe
             = f.text_field :balance, :class => 'text'
       %dl.third
-        %dt= f.label :api_plan_id,  t('shoppe.subscription_plans.api_plan_id')
+        %dt= f.label :api_plan_id,  t('shoppe.subscribers.api_plan_id')
         %dd
-          = f.fields_for @subscriber.subscription_plan do |ff|
-            = ff.text_field :api_plan_id, {:class => 'text', readonly: true}
+          - if @subscriber.subscription_plan.present?
+            = f.fields_for @subscriber.subscription_plan do |ff|
+              = ff.text_field :api_plan_id, {:class => 'text', readonly: true}
+              %p.help=  t('shoppe.subscription_plans.stripe_subscription_plan_id')
+          - else
+            = text_field_tag :api_plan_id, nil, {:class => 'text', readonly: true}
             %p.help=  t('shoppe.subscription_plans.stripe_subscription_plan_id')
       %dl.third
-        %dt= f.label :stripe_id,  t('shoppe.subscription_plans.stripe_id')
+        %dt= f.label :stripe_id,  t('shoppe.subscribers.stripe_id')
         %dd
           = f.text_field :stripe_id, {:class => 'text', readonly: @subscriber.stripe_id.present?}
           %p.help=  t('shoppe.subscription_plans.stripe_subscription_plan_id')
@@ -27,7 +31,7 @@
         %dt= f.label :recipient_name,  t('shoppe.subscribers.recipient_name')
         %dd
           = f.text_field :recipient_name, {:class => 'text'}
-          %p.help=  t('shoppe.subscription_plans.subscription_recipient_name')
+          %p.help=  t('shoppe.subscribers.subscriber_recipient_name')
       %dl.third
         %dt= f.label :recipient_email,  t('shoppe.subscribers.recipient_email')
         %dd
@@ -50,7 +54,7 @@
 
   %p.submit
     - unless @subscriber.new_record?
-      - if @subscriber.cancelled_at.blank?
+      - if @subscriber.cancelled_at.blank? and @subscriber.subscription_plan.present?
         %span.right
           = link_to t('shoppe.subscribers.cancel'),
                     [@subscription_plan, @subscriber],
@@ -59,5 +63,5 @@
                     data: {confirm: t('shoppe.subscribers.delete_confirmation')}
     = f.submit t('shoppe.subscribers.save'),
                class: 'button green',
-               data: {disable_with: (@subscriber.new_record? ? t('shoppe.customers.creating_customer') : t('shoppe.customers.updating_customer'))}
-    = link_to t('shoppe.customers.cancel'), [@subscription_plan, :subscribers], :class => 'button'
+               data: {disable_with: (@subscriber.new_record? ? t('shoppe.subscribers.creating_subscriber') : t('shoppe.subscribers.updating_subscriber'))}
+    = link_to t('shoppe.subscribers.cancel'), [@subscription_plan, :subscribers], :class => 'button'

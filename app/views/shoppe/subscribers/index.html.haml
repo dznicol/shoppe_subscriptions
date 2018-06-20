@@ -1,7 +1,7 @@
 - @page_title = t('shoppe.subscribers.subscribers')
 
 = content_for :header do
-  %p.buttons= link_to t('shoppe.subscribers.back_to_subscription_plan') , [:edit, @subscription_plan], :class => 'button'
+  %p.buttons= link_to t('shoppe.subscribers.back_to_subscribers') , :subscribers, :class => 'button'
   %h2.subscription_plans= t('shoppe.subscribers.subscribers')
 
 .table
@@ -26,14 +26,14 @@
       - else
         - for subscriber in @subscribers
           %tr
-            %td= link_to subscriber.customer.full_name, [:edit, @subscription_plan, subscriber]
+            %td= link_to subscriber.customer.full_name, [:edit, subscriber]
             %td= subscriber.recipient_name
             %td= subscriber.recipient_email
             %td= subscriber.recipient_phone
             %td= subscriber.created_at
             %td= subscriber.cancelled_at
             %td= "#{Shoppe.settings.currency_unit.html_safe}#{subscriber.balance}"
-            %td= subscriber.subscription_plan.api_plan_id
+            %td= subscriber.subscription_plan.present? ? subscriber.subscription_plan.api_plan_id : t('shoppe.subscribers.prepay')
             %td= subscriber.stripe_id
 
 %br
@@ -61,12 +61,12 @@
       - else
         - for subscriber in @cancelled_subscribers
           %tr
-            %td= link_to subscriber.customer.full_name, [:edit, @subscription_plan, subscriber]
+            %td= link_to subscriber.customer.full_name, [:edit, subscriber]
             %td= subscriber.recipient_name
             %td= subscriber.recipient_email
             %td= subscriber.recipient_phone
             %td= subscriber.created_at
             %td= subscriber.cancelled_at
             %td= "#{Shoppe.settings.currency_unit.html_safe}#{subscriber.balance}"
-            %td= subscriber.subscription_plan.api_plan_id
+            %td= subscriber.subscription_plan.present? ? subscriber.subscription_plan.api_plan_id : t('shoppe.subscribers.prepay')
             %td= subscriber.stripe_id

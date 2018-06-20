@@ -1,14 +1,14 @@
 module Shoppe
   class SubscribersController < Shoppe::ApplicationController
     before_action :set_subscriber, only: [:show, :edit, :update, :destroy]
-    before_action :set_subscription_plan
+    before_action :set_subscription_plan, only: [:index, :create, :new]
 
     before_filter { @active_nav = :subscribers }
 
     # GET /subscribers
     def index
-      @subscribers = @subscription_plan.subscribers
-      @cancelled_subscribers = @subscription_plan.cancelled_subscribers
+      @subscribers = @subscription_plan.present? ? @subscription_plan.subscribers : Shoppe::Subscriber.all
+      @cancelled_subscribers = @subscription_plan.present? ? @subscription_plan.cancelled_subscribers : Shoppe::Subscriber.cancelled
     end
 
     # GET /subscribers/1
@@ -61,7 +61,7 @@ module Shoppe
     end
 
     def set_subscription_plan
-      @subscription_plan = SubscriptionPlan.find(params[:subscription_plan_id])
+      @subscription_plan = SubscriptionPlan.find(params[:subscription_plan_id]) if params[:subscription_plan_id].present?
     end
 
     # Only allow a trusted parameter "white list" through.

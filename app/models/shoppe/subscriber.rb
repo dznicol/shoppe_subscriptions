@@ -16,6 +16,7 @@ module Shoppe
     belongs_to :delivery_address, class_name: 'Shoppe::Address'
 
     default_scope { where(cancelled_at: nil) }
+    scope :cancelled, -> { where.not(cancelled_at: nil) }
 
     attr_accessor :stripe_api_key
 
