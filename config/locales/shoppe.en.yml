@@ -5,6 +5,7 @@ en:
         subscribers: Subscribers
         subscription_plans: Subscription Plans
         subscriber_gifts: Subscriber Gifts
+        subscriber_transactions: Subscriber Transactions
     subscription_plans:
       subscription_plans: Subscription Plans
       new: New Subscription Plan
@@ -93,6 +94,21 @@ en:
       successfully_destroyed: Gift was successfully destroyed.
       delete_confirmation: Are you sure you want to delete this Subscriber Gift?
       subscriber_id: Subscriber ID
+    subscriber_transactions:
+      subscriber_transaction: Subscriber Transaction
+      subscriber_transactions: Subscriber Transactions
+      new_subscriber_transaction: New Subscriber Transaction
+      edit_subscriber_transaction: Edit Subscriber Transaction
+      subscriber: Subscriber
+      transaction_type: Transaction Type
+      discount_code: Discount Code
+      total: Total
+      subtotal: Sub-Total
+      no_transactions: No Transactions
+      back: Back
+      id: ID
+      delete_confirmation: Are you sure you wish to remove this subscriber transaction?
+      date: Date
 
     intervals:
       day: Day

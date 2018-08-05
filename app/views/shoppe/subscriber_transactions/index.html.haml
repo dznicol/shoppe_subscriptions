@@ -1,0 +1,42 @@
+= stylesheet_link_tag 'shoppe_subscriptions/application'
+= javascript_include_tag 'shoppe_subscriptions/application'
+
+- @page_title = t('shoppe.subscriber_transactions.subscriber_transactions')
+
+= content_for :header do
+  %p.buttons
+    = link_to t('shoppe.subscriber_transactions.new_subscriber_transaction'), :new_subscriber_transaction, :class => 'button green'
+  %h2.wallet
+    = t('shoppe.subscriber_transactions.subscriber_transactions')
+    %span= page_entries_info @subscriber_transactions
+
+.table
+  %table.data
+    %thead
+      %tr
+        %th= t('shoppe.subscribers.id')
+        %th= t('shoppe.subscriber_transactions.subscriber')
+        %th= t('shoppe.subscriber_transactions.date')
+        %th= t('shoppe.subscriber_transactions.transaction_type')
+        %th= t('shoppe.subscriber_transactions.discount_code')
+        %th= t('shoppe.subscriber_transactions.total')
+        %th= t('shoppe.subscriber_transactions.subtotal')
+    %tbody
+      - if @subscriber_transactions.empty?
+        %tr.empty
+          %td{:colspan => 7}= t('shoppe.subscriber_transactions.no_transactions')
+      - else
+        - for subscriber_transaction in @subscriber_transactions
+          %tr
+            %td= link_to subscriber_transaction.id, [:edit, subscriber_transaction]
+            - if subscriber_transaction.subscriber.present?
+              %td= link_to subscriber_transaction.subscriber.try(:full_name) || 'Unknown', [:edit, subscriber_transaction.subscriber]
+            - else
+              %td
+            %td= subscriber_transaction.created_at
+            %td= subscriber_transaction.transaction_type
+            %td= subscriber_transaction.discount_code
+            %td= subscriber_transaction.total
+            %td= subscriber_transaction.subtotal
+
+= paginate @subscriber_transactions

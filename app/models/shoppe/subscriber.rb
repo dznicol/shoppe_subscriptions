@@ -24,6 +24,10 @@ module Shoppe
       recipient_name || customer.full_name
     end
 
+    def full_details
+      recipient_name.blank? ? customer.full_name : "#{customer.full_name} (#{recipient_name})"
+    end
+
     private
 
     def create_stripe_entity(_api_key = nil)

@@ -1,0 +1,9 @@
+= stylesheet_link_tag 'shoppe_subscriptions/application'
+= javascript_include_tag 'shoppe_subscriptions/application'
+
+- @page_title = t('shoppe.subscriber_transactions.subscriber_transaction')
+
+= content_for :header do
+  %p.buttons= link_to t('shoppe.subscriber_transactions.back'), :subscriber_transactions, :class => 'button'
+  %h2.wallet= t('shoppe.subscriber_transactions.subscriber_transaction')
+= render 'form'

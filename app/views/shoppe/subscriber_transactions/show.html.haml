@@ -1,0 +1,9 @@
+= stylesheet_link_tag 'shoppe_subscriptions/application'
+= javascript_include_tag 'shoppe_subscriptions/application'
+
+- @page_title = t('shoppe.subscriber_transactions.subscriber_transaction') + " - #{@subscriber_transaction.id}"
+= content_for :header do
+  %p.buttons
+    = link_to t('shoppe.subscriber_transactions.new_subscriber_transaction'), [:new, @subscriber_transaction], class: "button"
+    = link_to t('shoppe.subscriber_transactions.edit_subscriber_transaction'), [:edit, @subscriber_transaction], class: "button"
+  %h2.users= t('shoppe.subscriber_transactions.subscriber_transaction') + "- #{@subscriber_transaction.subscriber.try(:customer).try(:name)}"

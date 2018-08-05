@@ -10,4 +10,5 @@ Shoppe::Engine.routes.draw do
   end
 
   resources :subscriber_gifts
+  resources :subscriber_transactions
 end

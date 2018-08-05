@@ -1,7 +1,7 @@
 module Shoppe
   class SubscriberTransaction < ActiveRecord::Base
 
-    TYPES = %w(invoice refund)
+    TYPES = %w(invoice prepay refund)
 
     belongs_to :subscriber
   end

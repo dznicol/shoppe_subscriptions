@@ -1,0 +1,36 @@
+= form_for @subscriber_transaction do |f|
+  = f.error_messages
+
+  = field_set_tag t('shoppe.subscriber_transactions.subscriber_transaction') do
+    .splitContainer
+      %dl.half
+        %dt= f.label :subscriber, t('shoppe.subscriber_transactions.subscriber')
+        %dd
+          = f.collection_select :subscriber_id, @subscribers, :id, :full_details, {include_blank: true}, {class: 'chosen-with-deselect', data: {placeholder: t('shoppe.subscriber_transactions.subscriber')}}
+      %dl.half
+        %dt= f.label :transaction_type, t('shoppe.subscriber_transactions.transaction_type')
+        %dd
+          = f.select :transaction_type, options_for_select(Shoppe::SubscriberTransaction::TYPES, @subscriber_transaction.transaction_type), {include_blank: true}, {class: 'chosen-with-deselect', data: {placeholder: t('shoppe.subscriber_transactions.transaction_type')}}
+    .splitContainer
+      %dl.third
+        %dt= f.label :subtotal, t('shoppe.subscriber_transactions.subtotal')
+        %dd
+          .moneyInput
+            .currency= currency_symbol(@subscriber_transaction.subscriber.try :currency)
+            = f.text_field :subtotal, :class => 'text'
+      %dl.third
+        %dt= f.label :total, t('shoppe.subscriber_transactions.total')
+        %dd
+          .moneyInput
+            .currency= currency_symbol(@subscriber_transaction.subscriber.try :currency)
+            = f.text_field :total, :class => 'text'
+      %dl.third
+        %dt= f.label :discount_code, t('shoppe.subscriber_transactions.discount_code')
+        %dd
+          = f.text_field :discount_code, :class => 'text'
+
+  %p.submit
+    - unless @subscriber_transaction.new_record?
+      %span.right= link_to  t('shoppe.delete'), [@subscriber_transaction], :class => 'button purple', :method => :delete, :data => {:confirm => t('shoppe.subscriber_transactions.delete_confirmation')}
+    = f.submit t('shoppe.submit'), :class => 'button green'
+    = link_to t('shoppe.cancel'), :subscriber_transactions, :class => 'button'
