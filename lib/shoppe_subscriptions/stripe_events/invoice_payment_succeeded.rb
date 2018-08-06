@@ -42,22 +42,25 @@ class InvoicePaymentSucceeded
                                        discount_code: discount_code,
                                        transaction_type: Shoppe::SubscriberTransaction::TYPES[0])
 
-        # Auto order the product if the balance now matches (or exceeds) product cost
-        product = subscriber.subscription_plan.product
+        # Only purchase where there is a plan, otherwise this is not a plan-style product and purchasing managed elsewhere
+        if subscriber.subscription_plan.present?
+          # Auto order the product if the balance now matches (or exceeds) product cost
+          product = subscriber.subscription_plan.product
 
-        # We can only auto order if we correctly retrieve the product price, which fails if there are
-        # variants but no default variant (as Shoppe returns the 0 priced parent product!)
-        product = product.variants.first if product.has_variants? && product.default_variant.nil?
+          # We can only auto order if we correctly retrieve the product price, which fails if there are
+          # variants but no default variant (as Shoppe returns the 0 priced parent product!)
+          product = product.variants.first if product.has_variants? && product.default_variant.nil?
 
-        product_price = product.price(subscriber.currency)
+          product_price = product.price(subscriber.currency)
 
-        if product_price.nil?
-          Rails.logger.warn "Cannot price in #{subscriber.currency} for product #{product.id}"
-          raise SubscriptionCreationError.new("Cannot price in #{subscriber.currency} for product #{product.id}")
-        end
+          if product_price.nil?
+            Rails.logger.warn "Cannot price in #{subscriber.currency} for product #{product.id}"
+            raise SubscriptionCreationError.new("Cannot price in #{subscriber.currency} for product #{product.id}")
+          end
 
-        if subscriber.balance >= product_price
-          purchase(customer, subscriber, invoice)
+          if subscriber.balance >= product_price
+            purchase(customer, subscriber, invoice)
+          end
         end
       else
         Rails.logger.warn "Cannot find subscriber with id #{subscription_id}"
