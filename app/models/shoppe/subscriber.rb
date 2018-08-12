@@ -21,7 +21,7 @@ module Shoppe
     attr_accessor :stripe_api_key
 
     def full_name
-      recipient_name || customer.full_name
+      recipient_name.presence || customer.full_name
     end
 
     def full_details
