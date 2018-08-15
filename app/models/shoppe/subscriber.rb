@@ -1,5 +1,8 @@
 module Shoppe
   class Subscriber < ActiveRecord::Base
+
+    PHONE_REGEX = /\A[+?\d\ \-x\(\)]{7,}\z/
+
     include ApiHandler
 
     belongs_to :subscription_plan, class_name: 'Shoppe::SubscriptionPlan'
@@ -19,6 +22,8 @@ module Shoppe
     scope :cancelled, -> { where.not(cancelled_at: nil) }
 
     attr_accessor :stripe_api_key
+
+    validates :recipient_phone, allow_blank: true, format: { with: PHONE_REGEX }
 
     def full_name
       recipient_name.presence || customer.full_name
