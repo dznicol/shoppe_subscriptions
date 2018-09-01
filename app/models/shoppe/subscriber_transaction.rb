@@ -1,5 +1,5 @@
 module Shoppe
-  class SubscriberTransaction < ActiveRecord::Base
+  class SubscriberTransaction < Shoppe::ApplicationRecord
 
     TYPES = %w(invoice prepay refund)
 

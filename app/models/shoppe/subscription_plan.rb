@@ -1,5 +1,5 @@
 module Shoppe
-  class SubscriptionPlan < ActiveRecord::Base
+  class SubscriptionPlan < Shoppe::ApplicationRecord
     include ApiHandler
 
     self.table_name = 'shoppe_subscription_plans'

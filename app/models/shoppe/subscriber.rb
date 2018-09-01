@@ -1,5 +1,5 @@
 module Shoppe
-  class Subscriber < ActiveRecord::Base
+  class Subscriber < Shoppe::ApplicationRecord
 
     PHONE_REGEX = /\A[+?\d\ \-x\(\)]{7,}\z/
 

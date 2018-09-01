@@ -17,8 +17,8 @@ Gem::Specification.new do |s|
   s.files = Dir['{app,config,db,lib}/**/*', 'MIT-LICENSE', 'Rakefile', 'README.rdoc']
   s.test_files = Dir['test/**/*']
 
-  s.add_dependency 'rails', '~> 4.2.8'
-  s.add_dependency 'shoppe', '> 0.0.9', '< 2'
+  s.add_dependency 'rails', '~> 5.0'
+  s.add_dependency 'shoppe', '>= 2.0.0'
   s.add_dependency 'stripe', '~> 2.8.0'
   s.add_dependency 'stripe_event'
 end
