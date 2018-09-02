@@ -1,7 +1,7 @@
 module Shoppe
   class SubscriberTransactionsController < ApplicationController
 
-    before_filter { @active_nav = :subscriber_transactions }
+    before_action { @active_nav = :subscriber_transactions }
     before_action :set_subscriber_transaction, only: [:show, :edit, :update, :destroy]
 
     # GET /subscriber_transactions
