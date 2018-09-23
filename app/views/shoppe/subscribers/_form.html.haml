@@ -14,15 +14,15 @@
         %dd
           - if @subscriber.subscription_plan.present?
             = f.fields_for @subscriber.subscription_plan do |ff|
-              = ff.text_field :api_plan_id, {:class => 'text', readonly: true}
+              = ff.text_field :api_plan_id, {:class => 'text'}
               %p.help=  t('shoppe.subscription_plans.stripe_subscription_plan_id')
           - else
-            = text_field_tag :api_plan_id, nil, {:class => 'text', readonly: true}
+            = text_field_tag :api_plan_id, nil, {:class => 'text'}
             %p.help=  t('shoppe.subscription_plans.stripe_subscription_plan_id')
       %dl.third
         %dt= f.label :stripe_id,  t('shoppe.subscribers.stripe_id')
         %dd
-          = f.text_field :stripe_id, {:class => 'text', readonly: @subscriber.stripe_id.present?}
+          = f.text_field :stripe_id, {:class => 'text'}
           %p.help=  t('shoppe.subscription_plans.stripe_subscription_plan_id')
 
   = field_set_tag  t('shoppe.subscribers.recipient_details') do
