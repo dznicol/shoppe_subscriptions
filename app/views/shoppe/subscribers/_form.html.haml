@@ -10,15 +10,10 @@
             .currency= Shoppe.settings.currency_unit.html_safe
             = f.text_field :balance, :class => 'text'
       %dl.third
-        %dt= f.label :api_plan_id,  t('shoppe.subscribers.api_plan_id')
+        %dt= f.label :subscription_plan,  t('shoppe.subscribers.subscription_plan')
         %dd
-          - if @subscriber.subscription_plan.present?
-            = f.fields_for @subscriber.subscription_plan do |ff|
-              = ff.text_field :api_plan_id, {:class => 'text'}
-              %p.help=  t('shoppe.subscription_plans.stripe_subscription_plan_id')
-          - else
-            = text_field_tag :api_plan_id, nil, {:class => 'text'}
-            %p.help=  t('shoppe.subscription_plans.stripe_subscription_plan_id')
+          = f.collection_select :subscription_plan_id, @subscription_plans, :id, :api_plan_id, {include_blank: true}, {class: 'chosen-with-deselect', data: {placeholder: t('shoppe.subscription_plans.select_subscription_plan')}}
+          %p.help=  t('shoppe.subscription_plans.stripe_subscription_plan_id')
       %dl.third
         %dt= f.label :stripe_id,  t('shoppe.subscribers.stripe_id')
         %dd

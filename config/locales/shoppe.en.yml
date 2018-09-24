@@ -32,6 +32,7 @@ en:
       stripe_subscription_id: This will be the ID shown for the current customer subscription on Stripe dashboard
       product: Product
       select_product: Select Product
+      select_subscription_plan: Select Subscription Plan
       sync: Sync with Provider
       summary: Summary
       price: Price
@@ -72,6 +73,7 @@ en:
       status: Status
       prepay: Prepay
       api_plan_id: API Plan ID
+      subscription_plan: Subscription Plan
       subscriber_recipient_name: The recipient of this subscription
       creating_subscriber: Creating Subscriber
       updating_subscriber: Updating Subscriber

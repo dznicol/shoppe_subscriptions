@@ -18,10 +18,12 @@ module Shoppe
     # GET /subscribers/new
     def new
       @subscriber = Subscriber.new
+      @subscription_plans = Shoppe::SubscriptionPlan.all
     end
 
     # GET /subscribers/1/edit
     def edit
+      @subscription_plans = Shoppe::SubscriptionPlan.all
     end
 
     # POST /subscribers
@@ -57,7 +59,7 @@ module Shoppe
       @subscriber = Subscriber.unscoped.find(params[:id])
 
       # Also set the Stripe API Key for API actions on this subscriber
-      @subscriber.stripe_api_key = ENV[session[:stripe_account]]
+      @subscriber.stripe_api_key = session[:stripe_account].present? ? ENV[session[:stripe_account]] : ''
     end
 
     def set_subscription_plan
@@ -67,7 +69,7 @@ module Shoppe
     # Only allow a trusted parameter "white list" through.
     def subscriber_params
       params.require(:subscriber).permit(:subscriber_plan_id, :customer_id, :recipient_name, :recipient_email,
-                                         :recipient_phone, :balance, :stripe_id, :api_plan_id)
+                                         :recipient_phone, :balance, :stripe_id, :subscription_plan_id)
     end
   end
 end
