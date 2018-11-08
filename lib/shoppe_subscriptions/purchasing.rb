@@ -81,11 +81,11 @@ module Purchasing
       order.properties[:subscription] = subscriber.stripe_id
 
       # Allow errors to propogate back to Stripe so we don't silently forget this order
-      order.save
+      order.save!
       # Need to reload the order as the order_items do not instantly get mapped
       order.reload
 
-      order.payments.create(amount: subscription_product.price(subscriber.currency),
+      order.payments.create!(amount: subscription_product.price(subscriber.currency),
                             method: 'Subscription Reallocation',
                             reference: subscriber.stripe_id || "subscriber #{subscriber.id}",
                             refundable: false,
@@ -99,7 +99,7 @@ module Purchasing
       order.proceed_to_confirm
       order.confirm!
 
-      subscriber.save
+      subscriber.save!
     end
   end
 end
