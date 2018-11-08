@@ -87,7 +87,7 @@ module Purchasing
 
       order.payments.create!(amount: subscription_product.price(subscriber.currency),
                             method: 'Subscription Reallocation',
-                            reference: subscriber.stripe_id || "subscriber #{subscriber.id}",
+                            reference: subscriber.stripe_id.presence || "subscriber #{subscriber.id}",
                             refundable: false,
                             confirmed: true)
 
