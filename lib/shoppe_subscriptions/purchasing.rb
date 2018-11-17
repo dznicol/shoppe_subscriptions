@@ -62,6 +62,9 @@ module Purchasing
       order.email_address = subscriber.recipient_email.presence || customer.email
       order.phone_number = subscriber.recipient_phone.presence || customer.phone
 
+      # Save the order so that delivery checks etc work in the code below
+      order.save!
+
       order.order_items.add_item(subscription_product, 1)
 
       # Add any unclaimed gifts
