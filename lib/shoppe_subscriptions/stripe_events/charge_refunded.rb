@@ -17,7 +17,7 @@ class ChargeRefunded
 
         if subscriber.present?
           subscriber.transactions.create(total: refund_total, transaction_type: 'refund')
-          subscriber.balance -= total
+          subscriber.balance -= refund_total
           subscriber.save
         end
       elsif charge.customer.present?
