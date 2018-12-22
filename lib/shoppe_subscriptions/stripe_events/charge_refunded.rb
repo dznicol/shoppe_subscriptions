@@ -12,7 +12,8 @@ class ChargeRefunded
       if charge.invoice.present?
         invoice = Stripe::Invoice.retrieve(charge.invoice, Shoppe::Stripe.api_key)
 
-        subscriber = Shoppe::Subscriber.find_by(stripe_id: invoice.subscription)
+        # Must be unscoped to find cancelled subscribers
+        subscriber = Shoppe::Subscriber.unscoped.find_by(stripe_id: invoice.subscription)
 
         if subscriber.present?
           subscriber.transactions.create(total: refund_total, transaction_type: 'refund')
