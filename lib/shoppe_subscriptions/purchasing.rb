@@ -67,10 +67,12 @@ module Purchasing
 
       order.order_items.add_item(subscription_product, 1)
 
-      # Add any unclaimed gifts
+      # Add any unclaimed gifts (that are in stock)
       subscriber.subscriber_gifts.unclaimed.each do |gift|
-        order.order_items.add_item(gift.product, 1)
-        gift.update claimed: true
+        if gift.product.in_stock?
+          order.order_items.add_item(gift.product, 1)
+          gift.update claimed: true
+        end
       end
 
       order.delivery_service = order.available_delivery_services.first
