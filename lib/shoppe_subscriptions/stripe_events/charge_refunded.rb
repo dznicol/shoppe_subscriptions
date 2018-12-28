@@ -16,7 +16,7 @@ class ChargeRefunded
         subscriber = Shoppe::Subscriber.unscoped.find_by(stripe_id: invoice.subscription)
 
         if subscriber.present?
-          subscriber.transactions.create(total: refund_total, transaction_type: 'refund')
+          subscriber.transactions.create(total: -refund_total, transaction_type: 'refund')
           subscriber.balance -= refund_total
           subscriber.save
         end
@@ -28,7 +28,7 @@ class ChargeRefunded
           prepay_subscriber = shoppe_customer.subscribers.find_by(subscription_plan: nil) || shoppe_customer.subscribers.first
 
           if prepay_subscriber.present?
-            prepay_subscriber.transactions.create(total: refund_total, transaction_type: 'refund')
+            prepay_subscriber.transactions.create(total: -refund_total, transaction_type: 'refund')
             prepay_subscriber.save
           end
         end
