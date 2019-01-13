@@ -19,6 +19,19 @@ module Shoppe
       subscribers.unscoped.where(subscription_plan_id: id).where.not(cancelled_at: nil)
     end
 
+    # Price is plan amount plus additional shipping costs
+    def price(delivery_country)
+      prices = Shoppe::DeliveryServicePrice.joins(:delivery_service).where(shoppe_delivery_services: {active: true})
+                   .where(currency: currency)
+                   .order(:price).for_weight(total_weight)
+      prices = prices.select { |p| p.countries.empty? || p.country?(delivery_country) }
+      prices = prices.select { |p| p.states.empty? || p.state?(self.address4) } if self.delivery_country.code2 == 'US'
+      prices.sort{ |x,y| (y.delivery_service.default? ? 1 : 0) <=> (x.delivery_service.default? ? 1 : 0) }
+      prices.map(&:delivery_service).uniq
+
+      amount + prices.first.amount
+    end
+
     private
 
     def create_stripe_entity(api_key = nil)

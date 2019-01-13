@@ -23,6 +23,10 @@ module Shoppe
       ::Stripe::Plan.all({}, key(api_key))
     end
 
+    def self.get_subscription_product(product_id, api_key = nil)
+      ::Stripe::Product.retrieve(product_id, {api_key: key(api_key)})
+    end
+
     def self.native_amount(amount)
       amount / 100.0
     end

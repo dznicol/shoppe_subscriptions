@@ -74,15 +74,19 @@ module Shoppe
     # SYNC with plans provider
     def sync
       # Get all API plans for all known Stripe accounts
-      ENV.keys.each do |key|
-        if key.start_with? 'STRIPE_API_KEY'
-          name = get_stripe_account_id(key)
-          logger.debug "Loading Stripe subscription plans for account: #{name} (#{key})"
-          sync_plans(ENV[key])
+      begin
+        ENV.keys.each do |key|
+          if key.start_with? 'STRIPE_API_KEY'
+            name = get_stripe_account_id(key)
+            logger.debug "Loading Stripe subscription plans for account: #{name} (#{key})"
+            sync_plans(ENV[key])
+          end
         end
-      end
 
-      redirect_to subscription_plans_url, notice: t('shoppe.subscription_plans.api_responses.sync_complete')
+        redirect_to subscription_plans_url, notice: t('shoppe.subscription_plans.api_responses.sync_complete')
+      rescue ::Stripe::InvalidRequestError
+        redirect_to subscription_plans_url, warning: t('shoppe.subscription_plans.api_responses.plan_sync_failed')
+      end
     end
 
     def stripe_account
@@ -95,20 +99,17 @@ module Shoppe
     private
 
     def sync_plans(stripe_api_key)
-      begin
-        @external_plans = Shoppe::ApiHandler.get_subscription_plans(stripe_api_key)
-        @external_plans.data.each do |external_plan|
-          shoppe_plan = Shoppe::SubscriptionPlan.find_or_create_by(api_plan_id: external_plan.id, currency: external_plan.currency)
-          shoppe_plan.amount = Shoppe::ApiHandler.native_amount(external_plan.amount)
-          shoppe_plan.interval = external_plan.interval
-          shoppe_plan.interval_count = external_plan.interval_count
-          shoppe_plan.name = external_plan.name
-          shoppe_plan.trial_period_days = external_plan.trial_period_days || 0
-          shoppe_plan.stripe_api_key = stripe_api_key
-          shoppe_plan.save
-        end
-      rescue ::Stripe::InvalidRequestError
-        flash[:warning] = t('shoppe.subscription_plans.api_responses.plan_sync_failed')
+      @external_plans = Shoppe::ApiHandler.get_subscription_plans(stripe_api_key)
+      @external_plans.data.each do |external_plan|
+        stripe_product = Shoppe::ApiHandler.get_subscription_product(external_plan.product, stripe_api_key)
+        shoppe_plan = Shoppe::SubscriptionPlan.find_or_create_by(api_plan_id: external_plan.id, currency: external_plan.currency)
+        shoppe_plan.amount = Shoppe::ApiHandler.native_amount(external_plan.amount)
+        shoppe_plan.interval = external_plan.interval
+        shoppe_plan.interval_count = external_plan.interval_count
+        shoppe_plan.name = stripe_product.name
+        shoppe_plan.trial_period_days = external_plan.trial_period_days || 0
+        shoppe_plan.stripe_api_key = stripe_api_key
+        shoppe_plan.save
       end
     end
 
