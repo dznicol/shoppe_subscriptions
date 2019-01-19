@@ -14,6 +14,7 @@ module Shoppe
     has_many :subscribers, class_name: 'Shoppe::Subscriber'
 
     attr_accessor :stripe_api_key
+    attr_accessor :price
 
     def cancelled_subscribers
       subscribers.unscoped.where(subscription_plan_id: id).where.not(cancelled_at: nil)
@@ -21,18 +22,24 @@ module Shoppe
 
     # Price is plan amount plus additional shipping costs
     def price(delivery_country, state=nil)
+      @price ||= calculate_price(delivery_country, state)
+    end
+
+    private
+
+    def calculate_price(delivery_country, state=nil)
       prices = Shoppe::DeliveryServicePrice.joins(:delivery_service).where(shoppe_delivery_services: {active: true})
                    .where(currency: currency)
                    .order(:price).for_weight(product.default_variant.weight)
       prices = prices.select { |p| p.countries.empty? || p.country?(delivery_country) }
-      prices = prices.select { |p| p.states.empty? || p.state?(state) } if delivery_country.code2 == 'US' && state.present?
+      if delivery_country.code2 == 'US' && state.present?
+        prices = prices.select { |p| p.states.empty? || p.state?(state) }
+      end
       prices.sort{ |x,y| (y.delivery_service.default? ? 1 : 0) <=> (x.delivery_service.default? ? 1 : 0) }
       prices.map(&:delivery_service).uniq
 
-      amount + prices.first.price
+      amount + (prices.first.price / (product.price(currency) / amount))
     end
-
-    private
 
     def create_stripe_entity(api_key = nil)
       ::Stripe::Plan.create({

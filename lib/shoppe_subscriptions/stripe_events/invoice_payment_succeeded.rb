@@ -45,13 +45,16 @@ class InvoicePaymentSucceeded
         # Only purchase where there is a plan, otherwise this is not a plan-style product and purchasing managed elsewhere
         if subscriber.subscription_plan.present?
           # Auto order the product if the balance now matches (or exceeds) product cost
-          product = subscriber.subscription_plan.product
+          plan = subscriber.subscription_plan
+          product = plan.product
 
           # We can only auto order if we correctly retrieve the product price, which fails if there are
           # variants but no default variant (as Shoppe returns the 0 priced parent product!)
           product = product.variants.first if product.has_variants? && product.default_variant.nil?
 
-          product_price = product.price(subscriber.currency)
+          # Include delivery charges (if any) when calculating price
+          delivery_address = subscriber.delivery_address
+          product_price = plan.price(delivery_address.country, delivery_address.address4)
 
           if product_price.nil?
             Rails.logger.warn "Cannot price in #{subscriber.currency} for product #{product.id}"
