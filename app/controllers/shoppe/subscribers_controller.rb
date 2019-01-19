@@ -39,6 +39,10 @@ module Shoppe
 
     # PATCH/PUT /subscribers/1
     def update
+      if @subscriber.stripe_id != subscriber_params.stripe_id
+        @subscriber.update_attribute(:cancelled_at, nil)
+      end
+
       if @subscriber.update(subscriber_params)
         redirect_to [@subscription_plan, :subscribers], notice: t('shoppe.subscribers.update_notice')
       else
