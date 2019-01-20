@@ -28,17 +28,20 @@ module Shoppe
     private
 
     def calculate_price(delivery_country, state=nil)
-      prices = Shoppe::DeliveryServicePrice.joins(:delivery_service).where(shoppe_delivery_services: {active: true})
-                   .where(currency: currency)
-                   .order(:price).for_weight(product.default_variant.weight)
-      prices = prices.select { |p| p.countries.empty? || p.country?(delivery_country) }
-      if delivery_country.code2 == 'US' && state.present?
-        prices = prices.select { |p| p.states.empty? || p.state?(state) }
-      end
-      prices.sort{ |x,y| (y.delivery_service.default? ? 1 : 0) <=> (x.delivery_service.default? ? 1 : 0) }
-      prices.map(&:delivery_service).uniq
+      amount + (delivery_price(delivery_country, state).price / (product.price(currency) / amount))
+    end
 
-      amount + (prices.first.price / (product.price(currency) / amount))
+    def delivery_price(delivery_country, state=nil)
+      delivery_prices = Shoppe::DeliveryServicePrice.joins(:delivery_service).where(shoppe_delivery_services: {active: true})
+                            .where(currency: currency)
+                            .order(:price).for_weight(product.default_variant.weight)
+      delivery_prices = delivery_prices.select { |p| p.countries.empty? || p.country?(delivery_country) }
+      if delivery_country.code2 == 'US' && state.present?
+        delivery_prices = delivery_prices.select { |p| p.states.empty? || p.state?(state) }
+      end
+      delivery_prices.sort{ |x,y| (y.delivery_service.default? ? 1 : 0) <=> (x.delivery_service.default? ? 1 : 0) }
+      delivery_prices.map(&:delivery_service).uniq
+      delivery_prices.first
     end
 
     def create_stripe_entity(api_key = nil)
@@ -56,15 +59,16 @@ module Shoppe
     end
 
     def delete_stripe_entity(api_key = nil)
-      stripe_plan = retrieve_api_plan(api_plan_id, api_key)
+      stripe_plan = retrieve_subscription_plan(api_plan_id, api_key)
       stripe_plan.delete
     end
 
     def update_stripe_entity(api_key = nil)
       if name_changed?
-        stripe_plan = retrieve_api_plan(api_plan_id, api_key)
-        stripe_plan.name = name
-        stripe_plan.save
+        stripe_plan = retrieve_subscription_plan(api_plan_id, api_key)
+        stripe_product = retrieve_subscription_product(stripe_plan.product, api_key)
+        stripe_product.name = name
+        stripe_product.save
       end
     end
   end

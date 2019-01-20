@@ -41,8 +41,12 @@ module Shoppe
 
     private
 
-    def retrieve_api_plan(plan_id, api_key = nil)
+    def retrieve_subscription_plan(plan_id, api_key = nil)
       ::Stripe::Plan.retrieve(plan_id, key(api_key))
+    end
+
+    def retrieve_subscription_product(product_id, api_key = nil)
+      ::Stripe::Product.retrieve(product_id, key(api_key))
     end
 
     def retrieve_subscription(stripe_id, api_key = nil)
