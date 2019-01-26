@@ -19,7 +19,7 @@ class InvoicePaymentSucceeded
       # sure the Stripe ID in our Subscriber object is updated.
       # We now raise an error if we can't find the susbcriber so Stripe will retry, giving us a chance to get the
       # Stripe ID right in our DB.
-      subscriber = Shoppe::Subscriber.find_by(stripe_id: subscription_id)
+      subscriber = Shoppe::Subscriber.unscoped.find_by(stripe_id: subscription_id)
 
       # Don't rely on Stripe customer as currently multiple purchases can result in multiple customers.
       # Therefore although we have a record of the last customer's stripe_id, the best plan is to ignore it.
