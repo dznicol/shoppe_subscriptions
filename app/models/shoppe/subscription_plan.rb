@@ -15,6 +15,7 @@ module Shoppe
 
     attr_accessor :stripe_api_key
     attr_accessor :price
+    attr_accessor :product_price
 
     def cancelled_subscribers
       subscribers.unscoped.where(subscription_plan_id: id).where.not(cancelled_at: nil)
@@ -25,10 +26,19 @@ module Shoppe
       @price ||= calculate_price(delivery_country, state)
     end
 
+    # Product Price is the full price of product being purchased plus delivery costs
+    def product_price(delivery_country, state=nil)
+      @product_price ||= calculate_product_price(delivery_country, state)
+    end
+
     private
 
     def calculate_price(delivery_country, state=nil)
       amount + (delivery_price(delivery_country, state).price / (product.price(currency) / amount))
+    end
+
+    def calculate_product_price(delivery_country, state=nil)
+      product.price(currency) + delivery_price(delivery_country, state).price
     end
 
     def delivery_price(delivery_country, state=nil)

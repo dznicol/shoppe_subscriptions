@@ -54,10 +54,10 @@ class InvoicePaymentSucceeded
 
           # Include delivery charges (if any) when calculating price
           delivery_address = subscriber.delivery_address
-          product_price = plan.price(delivery_address.country, delivery_address.address4)
+          product_price = plan.product_price(delivery_address.country, delivery_address.address4)
 
           if product_price.nil?
-            Rails.logger.warn "Cannot price in #{subscriber.currency} for product #{product.id}"
+            Rails.logger.warn "Cannot find price in #{subscriber.currency} for product #{product.id}"
             raise SubscriptionCreationError.new("Cannot price in #{subscriber.currency} for product #{product.id}")
           end
 

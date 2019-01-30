@@ -96,7 +96,7 @@ module Purchasing
                             refundable: false,
                             confirmed: true)
 
-      new_balance = subscriber.balance - subscription_product.price(subscriber.currency)
+      new_balance = subscriber.balance - subscriber.subscription_plan.product_price(order.delivery_country, order.delivery_address4)
 
       subscriber.update balance: [0, new_balance].max
       subscriber.orders << order
