@@ -42,9 +42,10 @@ module Shoppe
     end
 
     def delivery_price(delivery_country, state=nil)
+      variant = product.default_variant || product.variants.first || product
       delivery_prices = Shoppe::DeliveryServicePrice.joins(:delivery_service).where(shoppe_delivery_services: {active: true})
                             .where(currency: currency)
-                            .order(:price).for_weight(product.default_variant.weight)
+                            .order(:price).for_weight(variant.weight)
       delivery_prices = delivery_prices.select { |p| p.countries.empty? || p.country?(delivery_country) }
       if delivery_country.code2 == 'US' && state.present?
         delivery_prices = delivery_prices.select { |p| p.states.empty? || p.state?(state) }
