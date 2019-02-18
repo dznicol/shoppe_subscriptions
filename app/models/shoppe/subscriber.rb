@@ -33,6 +33,14 @@ module Shoppe
       recipient_name.blank? ? customer.full_name : "#{customer.full_name} (#{recipient_name})"
     end
 
+    def recurring?(api_key = nil)
+      stripe_subscription(api_key).present?
+    end
+
+    def stripe_subscription(api_key = nil)
+      retrieve_subscription(stripe_id, api_key) if stripe_id.present? and cancelled_at.nil?
+    end
+
     private
 
     def create_stripe_entity(_api_key = nil)

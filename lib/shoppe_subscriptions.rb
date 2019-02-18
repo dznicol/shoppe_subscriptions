@@ -9,6 +9,8 @@ module ShoppeSubscriptions
       StripeEvent.configure do |events|
         events.subscribe 'invoice.payment_succeeded', InvoicePaymentSucceeded.new
         events.subscribe 'charge.refunded', ChargeRefunded.new
+
+        require 'shoppe_subscriptions/customer_extensions'
       end
 
     end
