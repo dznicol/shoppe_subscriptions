@@ -38,7 +38,7 @@ module Shoppe
     end
 
     def calculate_product_price(delivery_country, state=nil)
-      product.price(currency) + delivery_price(delivery_country, state).price
+      product.price(currency) + (delivery_price(delivery_country, state).try(:price) || 0)
     end
 
     def delivery_price(delivery_country, state=nil)
