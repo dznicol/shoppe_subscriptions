@@ -53,7 +53,14 @@ class InvoicePaymentSucceeded
           product = product.variants.first if product.has_variants? && product.default_variant.nil?
 
           # Include delivery charges (if any) when calculating price
-          delivery_address = subscriber.delivery_address
+          # Try to use any delivery_address if there is one. Next try to use the delivery address.
+          # If there is none and there is more than 1 address use the last address (otherwise we
+          # default delivery to biiling).
+          delivery_address = subscriber.delivery_address || customer.addresses.delivery.first
+          if delivery_address.nil?
+            delivery_address = customer.addresses.last if customer.addresses.count > 1
+          end
+
           product_price = plan.product_price(delivery_address.country, delivery_address.address4)
 
           if product_price.nil?
