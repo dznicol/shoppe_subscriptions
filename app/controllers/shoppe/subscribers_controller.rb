@@ -39,7 +39,7 @@ module Shoppe
 
     # PATCH/PUT /subscribers/1
     def update
-      if @subscriber.stripe_id != subscriber_params.stripe_id
+      if @subscriber.stripe_id != subscriber_params[:stripe_id]
         @subscriber.update_attribute(:cancelled_at, nil)
       end
 
