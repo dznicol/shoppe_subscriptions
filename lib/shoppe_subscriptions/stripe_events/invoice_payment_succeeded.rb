@@ -61,7 +61,7 @@ class InvoicePaymentSucceeded
             delivery_address = customer.addresses.last if customer.addresses.count > 1
           end
 
-          product_price = plan.product_price(delivery_address.country, delivery_address.address4)
+          product_price = plan.product_price(delivery_address.try(:country), delivery_address.try(:address4))
 
           if product_price.nil?
             Rails.logger.warn "Cannot find price in #{subscriber.currency} for product #{product.id}"
