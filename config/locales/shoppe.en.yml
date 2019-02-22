@@ -37,6 +37,8 @@ en:
       summary: Summary
       price: Price
       stripe_account_chooser_help: Please select Stripe account to communicate with
+      select_recipient_address: Select Recipient Address
+      recipient_delivery_address: Recipient Delivery Address
       api_responses:
         general: Payment provider API failed
         currency_retrieval_failed: Failed to retrieve charging currencies from payment provider

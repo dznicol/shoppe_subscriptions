@@ -22,19 +22,28 @@
 
   = field_set_tag  t('shoppe.subscribers.recipient_details') do
     .splitContainer
-      %dl.third
+      %dl.half
         %dt= f.label :recipient_name,  t('shoppe.subscribers.recipient_name')
         %dd
           = f.text_field :recipient_name, {:class => 'text'}
           %p.help=  t('shoppe.subscribers.subscriber_recipient_name')
-      %dl.third
+      %dl.half
         %dt= f.label :recipient_email,  t('shoppe.subscribers.recipient_email')
         %dd
           = f.text_field :recipient_email, {:class => 'text'}
-      %dl.third
+
+  = field_set_tag  t('shoppe.subscribers.recipient_details') do
+    .splitContainer
+      %dl.half
         %dt= f.label :recipient_phone,  t('shoppe.subscribers.recipient_phone')
         %dd
           = f.text_field :recipient_phone, {:class => 'text'}
+      %dl.half
+        %dt= f.label :delivery_address
+        %dd
+          = f.collection_select :delivery_address_id, @subscriber.customer.addresses, :id, :full_address, {include_blank: true}, {class: 'chosen-with-deselect', data: {placeholder: t('shoppe.subscription_plans.select_recipient_address')}}
+          %p.help=  t('shoppe.subscription_plans.recipient_delivery_address')
+
 
   = field_set_tag t('shoppe.subscribers.status') do
     .splitContainer
