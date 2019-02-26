@@ -90,13 +90,21 @@ module Purchasing
       # Need to reload the order as the order_items do not instantly get mapped
       order.reload
 
-      order.payments.create!(amount: subscription_product.price(subscriber.currency),
+      order_total = order.total
+
+      order.payments.create!(amount: order_total,
                             method: 'Subscription Reallocation',
                             reference: subscriber.stripe_id.presence || "subscriber #{subscriber.id}",
                             refundable: false,
                             confirmed: true)
 
-      new_balance = subscriber.balance - subscriber.subscription_plan.product_price(order.delivery_country, order.delivery_address4)
+      # if subscriber.subscription_plan.present?
+      #   new_balance = subscriber.balance - subscriber.subscription_plan.product_price(order.delivery_country, order.delivery_address4)
+      # else
+      #   new_balance = subscriber.balance - subscription_product.price(subscriber.currency)
+      # end
+
+      new_balance = subscriber.balance - order_total
 
       subscriber.update balance: [0, new_balance].max
       subscriber.orders << order
