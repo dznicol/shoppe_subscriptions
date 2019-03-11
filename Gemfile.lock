@@ -26,19 +26,20 @@ GIT
 
 GIT
   remote: https://github.com/dznicol/shoppe-stripe.git
-  revision: 74e177ed8f0727c05de63a3b0c53b34fb78f7e0e
+  revision: cc43f0edc4c560b385d41508ec0dce88f1d6aedd
   branch: rails5.0
   specs:
     shoppe-stripe (1.4.0)
       coffee-rails (~> 4)
-      shoppe (>= 1.0.0)
-      stripe (~> 2.8.0)
+      shoppe (>= 2.0.0)
+      stripe (~> 2.8)
 
 PATH
   remote: .
   specs:
     shoppe_subscriptions (1.0.0)
-      rails (~> 5.0.0)
+      rails (~> 5.0)
+      shoppe (>= 2.0.0)
       stripe (~> 2.8.0)
       stripe_event
 
@@ -107,7 +108,7 @@ GEM
     erubis (2.7.0)
     excon (0.62.0)
     execjs (2.7.0)
-    faraday (0.15.2)
+    faraday (0.15.4)
       multipart-post (>= 1.2, < 3)
     fission (0.5.0)
       CFPropertyList (~> 2.2)
@@ -323,9 +324,9 @@ GEM
       sprockets (>= 3.0.0)
     stripe (2.8.0)
       faraday (~> 0.9)
-    stripe_event (2.1.1)
+    stripe_event (2.2.0)
       activesupport (>= 3.1)
-      stripe (>= 2.8, < 4.0)
+      stripe (>= 2.8, < 5.0)
     temple (0.8.0)
     thor (0.20.0)
     thread_safe (0.3.6)
