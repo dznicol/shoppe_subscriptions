@@ -23,12 +23,21 @@ class InvoicePaymentSucceeded
 
       # Don't rely on Stripe customer as currently multiple purchases can result in multiple customers.
       # Therefore although we have a record of the last customer's stripe_id, the best plan is to ignore it.
-      customer = subscriber.customer
+      if subscriber.nil?
+        customer = Shoppe::Customer.find_by stripe_id: invoice.customer
+        # We have no choice but to take the first subscriber for this customer.
+        # FIXME - the alternative is to reject this call. Should we do that?
+        subscriber = customer.subscribers.try(:first)
+      else
+        customer = subscriber.customer
+      end
 
       # Add amount to balance for relevant subscription
       if subscriber.present?
         total = Shoppe::ApiHandler.native_amount invoice.total
         subtotal = Shoppe::ApiHandler.native_amount invoice.subtotal
+        tax = Shoppe::ApiHandler.native_amount invoice.tax
+        tax_percent = invoice.tax_percent
         # Subtotal is "Total of all subscriptions, invoice items, and prorations on the invoice before any discount is applied".
         # By using subtotal means we are taking into account any discount when deciding whether there are sufficient funs
         # to trigger a purchase below.
@@ -40,6 +49,8 @@ class InvoicePaymentSucceeded
         subscriber.transactions.create(total: total,
                                        subtotal: subtotal,
                                        discount_code: discount_code,
+                                       tax: tax,
+                                       tax_percent: tax_percent,
                                        transaction_type: Shoppe::SubscriberTransaction::TYPES[0])
 
         # Only purchase where there is a plan, otherwise this is not a plan-style product and purchasing managed elsewhere
