@@ -36,8 +36,12 @@ class InvoicePaymentSucceeded
       if subscriber.present?
         total = Shoppe::ApiHandler.native_amount invoice.total
         subtotal = Shoppe::ApiHandler.native_amount invoice.subtotal
-        tax = Shoppe::ApiHandler.native_amount invoice.tax
-        tax_percent = invoice.tax_percent
+        tax = if invoice.tax.present?
+                Shoppe::ApiHandler.native_amount invoice.tax
+              else
+                0
+              end
+        tax_percent = invoice.tax_percent.presence || 0
         # Subtotal is "Total of all subscriptions, invoice items, and prorations on the invoice before any discount is applied".
         # By using subtotal means we are taking into account any discount when deciding whether there are sufficient funs
         # to trigger a purchase below.
