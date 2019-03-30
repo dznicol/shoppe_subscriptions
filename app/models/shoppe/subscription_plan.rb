@@ -31,6 +31,10 @@ module Shoppe
       @product_price ||= calculate_product_price(delivery_country, state)
     end
 
+    def delivery_price_code(delivery_country, state=nil)
+      delivery_price(delivery_country, state).try(:code)
+    end
+
     private
 
     def calculate_price(delivery_country, state=nil)
