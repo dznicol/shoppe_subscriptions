@@ -44,7 +44,7 @@ module Shoppe
       end
 
       if @subscriber.update(subscriber_params)
-        redirect_to [@subscription_plan, :subscribers], notice: t('shoppe.subscribers.update_notice')
+        redirect_to edit_subscriber_path(@subscriber), notice: t('shoppe.subscribers.update_notice')
       else
         render :edit
       end
@@ -52,8 +52,17 @@ module Shoppe
 
     # DELETE /subscribers/1
     def destroy
-      @subscriber.update_attribute(:cancelled_at, DateTime.now)
-      redirect_to [@subscription_plan, :subscribers], notice: t('shoppe.subscribers.cancelled_notice')
+      subscription_plan = @subscriber.subscription_plan
+      begin
+        ActiveRecord::Base.transaction do
+          @subscriber.update_attribute(:cancelled_at, DateTime.now)
+        end
+      rescue ::Stripe::InvalidRequestError => e
+        redirect_to subscription_plan_subscribers_url(subscription_plan), alert: t('shoppe.subscribers.cancel_failed') and return
+        return
+      end
+
+      redirect_to subscription_plan_subscribers_url(subscription_plan), notice: t('shoppe.subscribers.cancelled_notice')
     end
 
     private

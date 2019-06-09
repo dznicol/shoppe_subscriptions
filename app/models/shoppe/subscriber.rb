@@ -54,11 +54,7 @@ module Shoppe
 
     def update_stripe_entity(api_key = nil)
       if cancelled_at_changed? and cancelled_at.present?
-        begin
-          delete_stripe_entity(api_key)
-        rescue ::Stripe::InvalidRequestError => e
-          Rails.logger.warn "Failed to delete subscription: #{e.message}"
-        end
+        delete_stripe_entity(api_key)
       end
     end
   end

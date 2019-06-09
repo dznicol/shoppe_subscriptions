@@ -55,6 +55,7 @@ en:
       back_to_subscription_plan: Back to Subscription Plan
       no_subscribers: No subscribers to display.
       customer_name: Customer Name
+      customer_email: Customer Email
       start_date: Start Date
       cancelled_date: Cancelled Date
       balance: Balance
@@ -69,6 +70,7 @@ en:
       save: Save Subscriber
       update_notice: Subscriber was successfully updated.
       cancelled_notice: Subscriber was successfully cancelled.
+      cancel_failed: Failed to cancel Subscription, did you select the right Stripe account?
       create_notice: Subscriber was successfully created.
       current_subscribers: Current Subscribers
       cancelled_subscribers: Cancelled Subscribers
