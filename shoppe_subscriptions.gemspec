@@ -19,6 +19,6 @@ Gem::Specification.new do |s|
 
   s.add_dependency 'rails', '~> 5.0'
   s.add_dependency 'shoppe', '>= 2.0.0'
-  s.add_dependency 'stripe', '~> 2.8.0'
+  s.add_dependency 'stripe'
   s.add_dependency 'stripe_event'
 end
