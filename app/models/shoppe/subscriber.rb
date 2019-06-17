@@ -5,7 +5,7 @@ module Shoppe
 
     include ApiHandler
 
-    belongs_to :subscription_plan, class_name: 'Shoppe::SubscriptionPlan'
+    belongs_to :subscription_plan, class_name: 'Shoppe::SubscriptionPlan', optional: true
 
     belongs_to :customer, class_name: 'Shoppe::Customer'
 

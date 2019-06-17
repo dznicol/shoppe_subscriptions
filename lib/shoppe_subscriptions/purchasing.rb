@@ -22,8 +22,7 @@ module Purchasing
                "Created for customer #{customer.id}"
              end
 
-      order = Shoppe::Order.create(notes: note, currency: subscriber.currency)
-      order.customer = customer
+      order = Shoppe::Order.create(notes: note, currency: subscriber.currency, customer: customer)
 
       # All billing and delivery details need to be copied to the order. Shoppe requirement.
       order.first_name = customer.first_name.presence || '-'
