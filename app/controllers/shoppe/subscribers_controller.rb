@@ -3,7 +3,7 @@ module Shoppe
     before_action :set_subscriber, only: [:show, :edit, :update, :destroy]
     before_action :set_subscription_plan, only: [:index, :create, :new]
 
-    before_filter { @active_nav = :subscribers }
+    before_action { @active_nav = :subscribers }
 
     # GET /subscribers
     def index

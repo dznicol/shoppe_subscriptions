@@ -3,8 +3,8 @@ module Shoppe
     before_action :set_stripe_account
     before_action :set_subscription_plan, only: [:show, :edit, :update, :destroy]
 
-    before_filter { @active_nav = :subscription_plans }
-    # before_filter { params[:id] && @subscription_plan = Shoppe::SubscriptionPlan.find(params[:id]) }
+    before_action { @active_nav = :subscription_plans }
+    # before_action { params[:id] && @subscription_plan = Shoppe::SubscriptionPlan.find(params[:id]) }
 
     # GET /subscription_plans
     def index

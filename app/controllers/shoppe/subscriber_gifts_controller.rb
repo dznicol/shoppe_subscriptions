@@ -2,7 +2,7 @@ module Shoppe
   class SubscriberGiftsController < Shoppe::ApplicationController
     before_action :set_subscriber_gift, only: [:show, :edit, :update, :destroy]
 
-    before_filter { @active_nav = :subscriber_gifts }
+    before_action { @active_nav = :subscriber_gifts }
 
     # GET /gifts
     def index
