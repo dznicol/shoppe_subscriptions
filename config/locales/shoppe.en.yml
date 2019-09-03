@@ -81,6 +81,8 @@ en:
       subscriber_recipient_name: The recipient of this subscription
       creating_subscriber: Creating Subscriber
       updating_subscriber: Updating Subscriber
+      blocked_products: Blocked Products
+      blocked_products_help: Select any products to be blocked from subscriber
     gifts:
       subscriber_gifts: Subscriber Gifts
       subscriber_gift: Subscriber Gift

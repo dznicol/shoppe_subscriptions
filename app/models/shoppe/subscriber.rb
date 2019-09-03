@@ -18,6 +18,9 @@ module Shoppe
 
     belongs_to :delivery_address, class_name: 'Shoppe::Address'
 
+    has_many :subscriber_product_blocks, class_name: 'Shoppe::SubscriberProductBlock'
+    has_many :blocked_products, through: :subscriber_product_blocks, source: :product
+
     default_scope { where(cancelled_at: nil) }
     scope :cancelled, -> { where.not(cancelled_at: nil) }
 

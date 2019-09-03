@@ -44,6 +44,11 @@
           = f.collection_select :delivery_address_id, @subscriber.customer.addresses, :id, :full_address, {include_blank: true}, {class: 'chosen-with-deselect', data: {placeholder: t('shoppe.subscription_plans.select_recipient_address')}}
           %p.help=  t('shoppe.subscription_plans.recipient_delivery_address')
 
+  = field_set_tag t('shoppe.subscribers.blocked_products') do
+    %dl
+      %dd
+        = f.collection_select :blocked_product_ids, @all_variants, :id, :name, {}, {:class => 'chosen', :multiple => true, :data => {:placeholder => t('shoppe.orders.products')}, selected: @subscriber.blocked_products.map(&:id)}
+        %p.help= t('shoppe.subscribers.blocked_products_help')
 
   = field_set_tag t('shoppe.subscribers.status') do
     .splitContainer

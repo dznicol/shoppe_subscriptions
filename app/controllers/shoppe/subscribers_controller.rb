@@ -24,6 +24,8 @@ module Shoppe
     # GET /subscribers/1/edit
     def edit
       @subscription_plans = Shoppe::SubscriptionPlan.all
+      # @product_blocks = @subscriber.product_blocks
+      @all_variants = @subscriber.try(:subscription_plan).try(:product).try(:variants) || {}
     end
 
     # POST /subscribers
@@ -82,7 +84,8 @@ module Shoppe
     # Only allow a trusted parameter "white list" through.
     def subscriber_params
       params.require(:subscriber).permit(:subscriber_plan_id, :customer_id, :recipient_name, :recipient_email,
-                                         :recipient_phone, :balance, :stripe_id, :subscription_plan_id, :delivery_address_id)
+                                         :recipient_phone, :balance, :stripe_id, :subscription_plan_id, :delivery_address_id,
+                                         blocked_product_ids: [])
     end
   end
 end
