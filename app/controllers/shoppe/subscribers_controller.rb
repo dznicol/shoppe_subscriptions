@@ -60,7 +60,7 @@ module Shoppe
           @subscriber.update_attribute(:cancelled_at, DateTime.now)
         end
       rescue ::Stripe::InvalidRequestError => e
-        redirect_to subscription_plan_subscribers_url(subscription_plan), alert: t('shoppe.subscribers.cancel_failed') and return
+        redirect_to subscription_plan_subscribers_url(subscription_plan), alert: t('shoppe.subscribers.cancel_failed')
         return
       end
 

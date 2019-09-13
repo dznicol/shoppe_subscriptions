@@ -79,7 +79,7 @@ module Shoppe
     end
 
     def update_stripe_entity(api_key = nil)
-      if name_changed?
+      if saved_change_to_name?
         stripe_plan = retrieve_subscription_plan(api_plan_id, api_key)
         stripe_product = retrieve_subscription_product(stripe_plan.product, api_key)
         stripe_product.name = name

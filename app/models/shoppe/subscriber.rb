@@ -56,7 +56,7 @@ module Shoppe
     end
 
     def update_stripe_entity(api_key = nil)
-      if cancelled_at_changed? and cancelled_at.present?
+      if saved_change_to_cancelled_at? and cancelled_at.present?
         delete_stripe_entity(api_key)
       end
     end
