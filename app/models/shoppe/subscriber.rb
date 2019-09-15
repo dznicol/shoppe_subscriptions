@@ -16,7 +16,7 @@ module Shoppe
     has_many :subscriber_orders, class_name: 'Shoppe::SubscriberOrder'
     has_many :orders, through: :subscriber_orders
 
-    belongs_to :delivery_address, class_name: 'Shoppe::Address'
+    belongs_to :delivery_address, class_name: 'Shoppe::Address', optional: true
 
     has_many :subscriber_product_blocks, class_name: 'Shoppe::SubscriberProductBlock'
     has_many :blocked_products, through: :subscriber_product_blocks, source: :product
