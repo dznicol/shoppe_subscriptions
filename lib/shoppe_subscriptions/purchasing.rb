@@ -112,6 +112,7 @@ module Purchasing
       order.confirm!
 
       subscriber.save!
+      order
     end
   end
 end
