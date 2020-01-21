@@ -17,7 +17,8 @@ class ChargeRefunded
 
         if subscriber.present?
           subscriber.transactions.create(total: -refund_total, transaction_type: 'refund')
-          subscriber.balance -= refund_total
+          new_balance = subscriber.balance - refund_total
+          subscriber.update balance: [0, new_balance].max
           subscriber.save
         end
       elsif charge.customer.present?
