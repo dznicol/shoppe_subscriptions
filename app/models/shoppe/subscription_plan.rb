@@ -9,7 +9,7 @@ module Shoppe
     validates :amount, presence: true
     validates :interval, presence: true
 
-    belongs_to :product, class_name: 'Shoppe::Product'
+    belongs_to :product, class_name: 'Shoppe::Product', optional: true
 
     has_many :subscribers, class_name: 'Shoppe::Subscriber'
 
