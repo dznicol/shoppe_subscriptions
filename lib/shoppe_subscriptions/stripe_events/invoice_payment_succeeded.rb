@@ -55,6 +55,7 @@ class InvoicePaymentSucceeded
                                        discount_code: discount_code,
                                        tax: tax,
                                        tax_percent: tax_percent,
+                                       source_id: invoice.charge,
                                        transaction_type: Shoppe::SubscriberTransaction::TYPES[0])
 
         # Only purchase where there is a plan, otherwise this is not a plan-style product and purchasing managed elsewhere
