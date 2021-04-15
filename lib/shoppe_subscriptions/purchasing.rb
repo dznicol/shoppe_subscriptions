@@ -3,10 +3,10 @@ module Purchasing
     subscription_product = product.nil? ? subscriber.subscription_plan.product : product
 
     if subscription_product.has_variants?
-      variant = if subscription_product.default_variant.present? and subscription_product.in_stock?
+      variant = if subscription_product.default_variant.present? && subscription_product.in_stock? && available?(subscriber, subscription_product.default_variant)
                   subscription_product.default_variant
                 else
-                  subscription_product.variants.find { |v| v.stock_control? == false or v.stock > 0 }
+                  subscription_product.variants.find { |v| (v.stock_control? == false || v.stock > 0) && available?(subscriber, v) }
                 end
       subscription_product = variant if variant.present?
     end
@@ -114,5 +114,9 @@ module Purchasing
       subscriber.save!
       order
     end
+  end
+
+  def available?(subscriber, product)
+    subscriber.blocked_products.exclude?(product)
   end
 end
