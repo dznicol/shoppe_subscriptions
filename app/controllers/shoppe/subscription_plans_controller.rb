@@ -135,7 +135,7 @@ module Shoppe
 
     # Only allow a trusted parameter "white list" through.
     def subscription_plan_params
-      params.require(:subscription_plan).permit(:amount, :interval, :interval_count, :name, :currency, :trial_period_days, :api_plan_id, :product_id)
+      params.require(:subscription_plan).permit(:amount, :interval, :interval_count, :name, :currency, :trial_period_days, :api_plan_id, :product_id, :stripe_additional_price)
     end
   end
 end

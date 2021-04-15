@@ -14,6 +14,10 @@
         %dd
           = f.text_field :api_plan_id, {:class => 'text', readonly: @subscription_plan.persisted?}
           %p.help=  t('shoppe.subscription_plans.stripe_subscription_plan_id')
+        %dt= f.label :stripe_additional_price,  t('shoppe.subscription_plans.stripe_additional_price')
+        %dd
+          = f.text_field :stripe_additional_price, {:class => 'text', readonly: @subscription_plan.persisted?}
+          %p.help=  t('shoppe.subscription_plans.stripe_additional_price')
 
   = field_set_tag t('shoppe.subscription_plans.price') do
     .splitContainer
