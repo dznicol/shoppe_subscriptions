@@ -9,6 +9,9 @@
           .moneyInput
             .currency= Shoppe.settings.currency_unit.html_safe
             = f.text_field :balance, :class => 'text'
+        %dt= f.label :has_migrated, t('shoppe.subscribers.has_migrated')
+        %dd.checkbox
+          = f.check_box :has_migrated
       %dl.third
         %dt= f.label :subscription_plan,  t('shoppe.subscribers.subscription_plan')
         %dd

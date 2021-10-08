@@ -34,6 +34,10 @@ class InvoicePaymentSucceeded
 
       # Add amount to balance for relevant subscription
       if subscriber.present?
+        if subscriber.has_migrated == true
+          return
+        end
+
         total = Shoppe::ApiHandler.native_amount invoice.total
         subtotal = Shoppe::ApiHandler.native_amount invoice.subtotal
         tax = if invoice.tax.present?
@@ -45,6 +49,7 @@ class InvoicePaymentSucceeded
         # Subtotal is "Total of all subscriptions, invoice items, and prorations on the invoice before any discount is applied".
         # By using subtotal means we are taking into account any discount when deciding whether there are sufficient funs
         # to trigger a purchase below.
+
         subscriber.update_attributes!(balance: (subscriber.balance + subtotal))
 
         discount_code = invoice.discount.present? ? invoice.discount.coupon.id : nil
