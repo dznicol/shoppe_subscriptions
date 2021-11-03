@@ -3,21 +3,23 @@
 
   = field_set_tag  @subscriber.customer.full_name do
     .splitContainer
-      %dl.third
+      %dl.quarter
         %dt= f.label :balance,  t('shoppe.subscribers.balance')
         %dd
           .moneyInput
             .currency= Shoppe.settings.currency_unit.html_safe
             = f.text_field :balance, :class => 'text'
-        %dt= f.label :has_migrated, t('shoppe.subscribers.has_migrated')
+      %dl.quarter
+        %dt= f.label :subscriber, t('shoppe.subscribers.caskshare')
         %dd.checkbox
           = f.check_box :has_migrated
-      %dl.third
+          = f.label :has_migrated,  t('shoppe.subscribers.has_migrated')
+      %dl.quarter
         %dt= f.label :subscription_plan,  t('shoppe.subscribers.subscription_plan')
         %dd
           = f.collection_select :subscription_plan_id, @subscription_plans, :id, :api_plan_id, {include_blank: true}, {class: 'chosen-with-deselect', data: {placeholder: t('shoppe.subscription_plans.select_subscription_plan')}}
           %p.help=  t('shoppe.subscription_plans.stripe_subscription_plan_id')
-      %dl.third
+      %dl.quarter
         %dt= f.label :stripe_id,  t('shoppe.subscribers.stripe_id')
         %dd
           = f.text_field :stripe_id, {:class => 'text'}

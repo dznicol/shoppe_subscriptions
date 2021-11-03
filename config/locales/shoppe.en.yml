@@ -83,6 +83,8 @@ en:
       updating_subscriber: Updating Subscriber
       blocked_products: Blocked Products
       blocked_products_help: Select any products to be blocked from subscriber
+      has_migrated: Has Migrated
+      caskshare: Caskshare
     gifts:
       subscriber_gifts: Subscriber Gifts
       subscriber_gift: Subscriber Gift
