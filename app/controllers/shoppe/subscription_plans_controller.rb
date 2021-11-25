@@ -127,7 +127,7 @@ module Shoppe
     end
 
     def set_stripe_account
-      @stripe_accounts = ['STRIPE_API_KEY', 'STRIPE_API_KEY_US']
+      @stripe_accounts = ['STRIPE_API_KEY', 'STRIPE_API_KEY_US', 'STRIPE_API_KEY_PLATFORM_US']
       session[:stripe_account] = @stripe_accounts[0] if session[:stripe_account].blank?
       @stripe_account = session[:stripe_account]
       logger.debug "Shoppe::SubscriptionPlans Stripe account is #{session[:stripe_account]}"
