@@ -108,8 +108,10 @@ module Purchasing
       subscriber.update balance: [0, new_balance].max
       subscriber.orders << order
 
+      Rails.logger.info "Confirming order #{order.id}"
       order.proceed_to_confirm
       order.confirm!
+      Rails.logger.info "Confirmed order #{order.id}"
 
       subscriber.save!
       order
