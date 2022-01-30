@@ -22,7 +22,7 @@ module Purchasing
                "Created for customer #{customer.id}"
              end
 
-      order = Shoppe::Order.create(notes: note, currency: subscriber.currency, customer: customer)
+      order = Shoppe::Order.create(notes: note, currency: subscriber.currency, customer: customer, subscriber: subscriber)
 
       # All billing and delivery details need to be copied to the order. Shoppe requirement.
       order.first_name = customer.first_name.presence || '-'
@@ -106,7 +106,6 @@ module Purchasing
       new_balance = subscriber.balance - order_total
 
       subscriber.update balance: [0, new_balance].max
-      subscriber.orders << order
 
       Rails.logger.info "Confirming order #{order.id}"
       order.proceed_to_confirm
