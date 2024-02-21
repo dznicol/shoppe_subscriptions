@@ -78,4 +78,3 @@
     = f.submit t('shoppe.subscribers.save'),
                class: 'button green',
                data: {disable_with: (@subscriber.new_record? ? t('shoppe.subscribers.creating_subscriber') : t('shoppe.subscribers.updating_subscriber'))}
-    = link_to t('shoppe.subscribers.cancel'), [@subscription_plan, :subscribers], :class => 'button'
