@@ -10,7 +10,7 @@ gemspec
 # Git. Remember to move these dependencies to your gemspec before releasing
 # your gem to rubygems.org.
 
-gem 'shoppe', git: 'https://github.com/dznicol/shoppe', branch: 'rails5.2'
+gem 'shoppe', git: 'https://github.com/dznicol/shoppe', branch: 'rails6.0'
 gem 'shoppe-stripe', git: 'https://github.com/dznicol/shoppe-stripe.git', branch: 'rails5.2'
 
 # To use a debugger
