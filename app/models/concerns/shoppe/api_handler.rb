@@ -32,11 +32,15 @@ module Shoppe
     end
 
     def self.key(api_key)
-      api_key || @stripe_api_key || Shoppe::Stripe.api_key
+      result = api_key.presence || @stripe_api_key.presence || Shoppe::Stripe.api_key
+      # Ensure we don't pass empty strings to Stripe 5.x
+      result.present? ? result : nil
     end
 
     def key(api_key)
-      api_key || @stripe_api_key || Shoppe::Stripe.api_key
+      result = api_key.presence || @stripe_api_key.presence || Shoppe::Stripe.api_key
+      # Ensure we don't pass empty strings to Stripe 5.x
+      result.present? ? result : nil
     end
 
     private
